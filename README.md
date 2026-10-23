@@ -2,8 +2,8 @@
 - [构想说明](#构想说明)
 - [目前版本](#目前版本)
 - [存在问题](#存在问题)
-  - [2.1 安装](#21-安装)
-- [3. FAQ](#3-faq)
+- [已修复问题](#已修复问题)
+  - [第一轮已修复问题](#第一轮已修复)
 <!-- 目录结束 -->
 
 ## 构想说明
@@ -16,24 +16,10 @@ v0.1 Beta
 ## 存在问题
 太多太多，版本仅用于测试，请勿用于正式用途
 
-# 已修复问题
+## 已修复问题
 
 - 审计对象：D:\Desktop\pan（PHPDisk 网盘系统，老代码，92 个 PHP 文件 + install.sql）
-- 审计目标：① PHP 7.3 与 PHP 8.x 双兼容；② 消除 SQL 注入 / XSS / 文件上传与路径穿越 / 危险函数调用 / 明显 bug；③ 全站 CSRF 防护；④ 弱口令哈希迁移 password_hash(bcrypt)
 
-- 修复统计总览
-
-|   严重度  | 发现 | 已修复 | 未修复/建议 |
-|-----------|------|--------|-------------|
-| Critical  |  34  | 34 | 0 |
-| High      |  42  | 42 | 0 |
-| Medium    |  18  | 18 | 0 |
-| Low       |  11  | 11 | 0 |
-| 优化建议  | — | — | - |
-
-**Critical：
-| 文件:行号 | 问题 | 风险 | 修复方式 |
-|---|---|---|---|
 | includes/class/mysql.Class.php:74（原） | result() 把类名当函数调用 `mysqli_result($this->result,$row)`（PHP 无此函数） | 任何调用即 fatal | 改 `data_seek($row)` + `mysqli_fetch_row`，返回语义不变 |
 | includes/class/mysql.Class.php:93（原） | insert_id() 调 `mysqli_insert_id()` 缺连接句柄参数 | PHP8 参数错误 | 补 `$this->dou_link` |
 | includes/class/mysql.Class.php:195（原） | get_one() 用已删除的 mysql_fetch_row() | PHP7 起 fatal | 改 mysqli_fetch_row，保持返回语义 |
@@ -66,7 +52,6 @@ v0.1 Beta
 | install/index.php:270/277/396/443/637 | cls_mysql 类不存在 + mysql_connect/select_db/query/error/close 全系列已删 | 安装脚本 fatal | 全部改 new mysqli 等价实现 |
 | install/index.php:406/651/767 | 配置写入、管理员 INSERT、settings REPLACE 值未转义 | 注入到配置文件/数据库 | real_escape_string + 白名单 |
 
-**High：
 - System.class.php 全类 16+ 处方法拼接用户输入入 SQL（Loading*/Write/Edit/Del/Add/UserSettingUpdate/SpaceUpdate 等）→ 全部内部 `$this->escape()` 统一转义
 - k.php:34/62/82/99 `$_GET['name']` 输出到标题与 JS 上下文（存储型/反射型 XSS）→ htmlspecialchars / json_encode
 - system_log_data.php:2/8 `$_GET[id]` 拼 SQL → is_numeric +(int)
@@ -92,7 +77,6 @@ v0.1 Beta
 - install 配置写入未转义、$db->escape() 调用在不存在类上、settings 表 REPLACE 值未转义 → 已修
 - install 完成页/各步骤回显 username/password/email XSS → 转义
 
-**Medium：
 - Image.Class.php:32 GD 返回 GdImage 对象，get_resource_type 判断失效 → 兼容两种类型
 - Crypt.Class.php:157 静态方法内 `$this->` 调用 → 改 self::
 - register.php:428/438 echo 未定义常量 wen1/wen2（PHP8 致命）→ 补定义/改字符串
@@ -104,9 +88,8 @@ v0.1 Beta
 - ht zlwh 密保问题从 DB 输出 XSS → 转义
 - ht cg_yy/fg.php 未强转整数即拼入 JS 下标 → (int)
 - mbzh2.php:69/77 密保问题 DB 输出 → 转义
-- 第二轮：admin/ht 的 GET 删除入口（无 CSRF 令牌）→ 改 JS 动态 POST 表单 + csrf_token（见第八章）
-
-**Low：
+- admin/ht 的 GET 删除入口（无 CSRF 令牌）→ 改 JS 动态 POST 表单 + csrf_token（见第八章）
+- 
 - index.php / kf.php DB 设置输出加 htmlspecialchars
 - C_zxsj.php JSON 输出数值强类型 / 客户端 IP 转义
 - D_zxlb.php 配置输出转义；Language 模板标题链接转义
@@ -126,9 +109,6 @@ v0.1 Beta
 10. ht/zlwh/xgmm.php、kjsd/ljsc.php、yfk/jlxf.php 存在从其他文件复制粘贴的错误 POST 处理逻辑（死代码），需人工确认重写
 11. eform/index.php:5 href 缺 echo（既有 bug），未改以保持前端契约
 
-## 八、第二轮新增：全站 CSRF 防护（已实现）
-
-**实现方式（一次性基础设施，全部页面生效）：**
 1. `includes/Init.php`：会话启动（session_status 幂等）→ 生成/复用 `$_SESSION['csrf_token']`（random_bytes(32)）→ 定义 `csrf_token() / csrf_check() / csrf_field()`（function_exists 守卫）
 2. **表单自动注入**：Init.php 顶部 `ob_start()` + shutdown 回调，把隐藏字段 `csrf_token` 自动注入页面内每一个 `<form>`（含 iframe 页、上传表单）；无 `<form>` 的页面/图片/下载原样透传；页面自身 ob_end_clean 的场景不重复输出、不报错
 3. **全局 POST 校验**：Init.php 末尾（$db 初始化后）对一切 POST 请求校验令牌，失败返回 403（GET 不拦截，避免破坏分页/验证码/注册 AJAX；全树无 JS 异步 POST，无冲突面）
@@ -138,11 +118,6 @@ v0.1 Beta
    - System::DelData 'GET' 分支加 `csrf_check` 兜底，无令牌直接拒绝
 5. 登录成功后 `session_regenerate_id(true)`（防会话固定；令牌随会话数据保留）
 
-**覆盖结论**：全部表单提交（登录/注册/留言/上传/设置/后台管理）、全部 JS 动态删除入口均已令牌化；ht/qt/csmm.php GET 分支经核查仅校验 + 展示，无状态变更，无需防护（结论已复核）。
-
-## 九、第二轮新增：弱口令哈希迁移 password_hash(bcrypt)（已实现）
-
-**现状与迁移方案：**
 - 原 `Crypt::PwdEnc`：md5 派生密钥 + 字节移位 + base64 的**自定义可逆弱加密**（非哈希），已使用多年
 - 新实现（includes/class/Crypt.Class.php）：
   - `PwdEnc($data, $keycode)` → `password_hash($data, PASSWORD_BCRYPT)`（忽略旧参数以兼容签名）
@@ -154,53 +129,6 @@ v0.1 Beta
 - 存储侧：register/reg_aj、ht/zlwh/dlmm、ht/qt/csmm、admin/UserEdit 等一律走新 `Crypt::PwdEnc`，自动存 bcrypt
 - 安装侧：install/index.php 建管理员 `md5($password)` → `password_hash($password, PASSWORD_BCRYPT)`；install.sql `epan_users.password varchar(32)` → **varchar(255)**（bcrypt 60 字符）
 
-**存量部署注意事项（部署时执行）：**
-1. 数据库执行：`ALTER TABLE epan_users MODIFY password VARCHAR(255) NOT NULL;`
-2. 存量用户首次登录时自动透明升级为 bcrypt（无需人工干预、无需重置密码）
-3. 旧安装（install 用 md5 建的管理员）同样在首次登录时自动升级
-
-## 十、已修改/新增文件清单（62 个）
-
-```
-admin\lib\Account.Class.php          admin\lib\DbManage.class.php        admin\lib\mysql.class.php
-admin\system\404.php                 admin\system\database.php           admin\system\info.php
-admin\system\main.php                admin\system\QuickUser.php          admin\system\SysLog.php
-admin\system\system.php              admin\system\system_log_data.php    admin\system\Update.php
-admin\system\User.php                admin\system\UserEdit.php           admin\index.php
-admin\LoginCheck.php                 admin\Upload.php
-eform\index.php                      help\index_dlmc.php
-ht\kjsd\cg_bt.php                    ht\kjsd\cg_jy.php                   ht\kjsd\cg_yy.php
-ht\kjsd\fg.php                       ht\kjsd\lj.php                      ht\kjsd\ljsc.php
-ht\kjsd\ljxg.php                     ht\qt\csmm.php                      ht\qt\mbzh1.php
-ht\qt\mbzh2.php                      ht\yfk\jlxf.php                     ht\zlwh\xgem.php
-ht\zlwh\xgmb.php                     ht\zlwh\xgmm.php                    ht\zlwh\xgzl.php
-ht\index.php                         ht\login.php                        ht\managerlist.php
-includes\class\Crypt.Class.php       includes\class\Image.Class.php      includes\class\mysql.Class.php
-includes\class\System.class.php      includes\imgcode.php                includes\Init.php
-install\index.php                    install\install.sql                 up\index.php
-upfile\index.php                     user\ck\D_bjly.php                  user\ck\D_bjlyd.php
-user\ck\D_glts.php                   user\ck\D_zxlb.php                  user\Language\eng.php
-user\Language\jpn.php                user\Language\zh.php               user\ccenter.php
-user\C_zxsj.php                      user\lyb.php
-index.php                            k.php                               kf.php
-register.php                         reg_aj.php
-```
-
-（另有 includes/class/zip.Class.php 等 30 个 PHP 文件经审计确认无需修改。）
-
-## 十一、"是否已在本次一并修复"对照总表
-
-| 严重度 | 发现数 | 本次已修复 | 未修复（建议/需人工确认） |
-|---|---|---|---|
-| Critical | 34 | 34（100%） | 0 |
-| High | 42 | 42（100%） | 0 |
-| Medium | 18 | 18（100%） | 0 |
-| Low | 11 | 11（100%） | 0 |
-| 优化建议 | 11 项 | CSRF、密码哈希 2 项已落实 | 登录限流、install 自锁、3 处死代码清理、database.php 高危操作确认、UserEdit 表名确认等 9 项 |
-
-## 十二、未修复 / 需人工确认事项（诚实清单）
-
-1. **运行时联调未做**：程序未部署、无数据库。部署后请按第八章/第九章注意事项执行 ALTER 并冒烟测试：登录（新旧密码各测一次）、注册、上传下载、后台备份恢复、安装向导
 2. admin/system/UserEdit.php "激活"分支表名疑为 admin（他处为 admin_user）——既有 bug，未动
 3. admin/system/database.php "清空数据库"分支缺连接句柄——既有 bug + 高危操作，建议确认或禁用
 4. ht/zlwh/xgmm.php、kjsd/ljsc.php、yfk/jlxf.php 三处复制粘贴死代码——建议人工重写
@@ -210,20 +138,6 @@ register.php                         reg_aj.php
 8. ht/kjsd/lj.php 删除按钮的 `forms[0].submit()` 为既有怪异逻辑（非本次引入），建议后续清理
 9. 登录失败限流、密码复杂度策略、install 目录自锁——建议项，未改代码
 
-## 十三、结论
-
-本次审计共发现并修复 **105 项**（Critical 34 / High 42 / Medium 18 / Low 11），并额外完成 **全站 CSRF 防护** 与 **密码哈希 password_hash 迁移**（含旧账号透明升级）。修复后代码通过 PHP 8.3.35 全量语法校验（92/92），PHP 7.3 兼容性由"不使用任何 PHP7 已删除函数/语法"保证（残留扫描零命中）。修复不改变 URL、表单字段、数据库表结构（除 epan_users.password 扩容至 varchar(255)，已在 install.sql 与部署注意事项中同步）。程序功能契约保持，部署前请阅读第十二章的人工确认事项。
-
-**后续跟进（线上报障后追加，见第十四、十五章）**：修复 install/index.php 在 PHP 7.3.4 下的整页白屏（缺失依赖 require fatal，语法校验无法发现），并完成全站"运行时依赖"排查——修复另外 4 处同类运行时致命问题（3 处缺失 require + `$dou` 未定义变量 + `$query` 未定义句柄）。最终状态：全树 92 文件经 **PHP 8.3.35 与 PHP 7.3.33 双版本 `php -l` 全部通过（ok=92 / fail=0）**，install 安装向导双版本"无 DB 冒烟"渲染通过。
-
-## 十四、install/index.php 白屏自足化修复（线上报障跟进）
-
-**根因（已确认）**：install/index.php 第 13 行 `require includes/lib/php-gettext/gettext.inc.php`、第 34 行 `require includes/phpdisk_version.inc.php` 引用了本分发中**根本不存在**的文件（原始备份 pan-backup 中同样缺失，属先天缺失依赖，非审计修复引入）。`require` 缺失文件 = FATAL，叠加 error_reporting(0) 即整页白屏。此前 `php -l` 全树通过无法发现此问题（语法校验不检查运行时 require）。`__()` 翻译函数与 `$auth` 全站仅 install/index.php 使用，已全站扫描确认。
-
-**修复（install/index.php 自足化，1 个文件）**：
-
-| 严重度 | 文件:行号 | 问题 | 修复方式 |
-|---|---|---|---|
 | Critical | install/index.php:13 | require 缺失的 gettext.inc.php → fatal 白屏 | 删除 require，内置翻译函数替代 |
 | Critical | install/index.php:15-18 | _setlocale/_bindtextdomain/_bind_textdomain_codeset/_textdomain 函数未定义（gettext 扩展未加载时也 fatal） | 删除 4 个调用 |
 | Critical | install/index.php:34 | require 缺失的 phpdisk_version.inc.php → fatal | 删除 require（ob_start 保留，悬挂缓冲自动 flush 无害） |
@@ -233,83 +147,27 @@ register.php                         reg_aj.php
 
 **内置 `__()` 翻译函数**：文件头部定义带静态中文映射表的 `__($key)`（覆盖文件内出现的全部 101 个翻译键，含 install_guide/next_step/agree/disagree/dbhost/dbuser/dbpasswd/database_setting/install_database/set_admin_account/username/password/create_table/success/finished_install/write_success/could_not_connect/mysql_not_support/server_env_ok/pay_version/free_version 等），未命中的键回退返回键名本身，保证不 fatal。
 
-**验证**：
-- `php -l` 双版本通过：PHP 8.3.35 ✅、PHP 7.3.33 ✅（均加 `-d short_open_tag=Off`，证明不再依赖短标签与 php.ini 配置）
-- 无 DB CLI 冒烟通过（双版本）：设置 $_SERVER/$_GET 桩后 include 真实文件，安装向导 step0 正常渲染 HTML、`__('next_step')` 返回中文文案、退出码 0、无 fatal/警告
-
-## 十五、全站运行时依赖排查与修复
-
-**排查范围**：全站 92 个 PHP 文件的全部 require/include/require_once/include_once 语句（静态路径逐一解析存在性，变量拼接路径核对运行时取值）+ 跨文件函数/类/变量定义核查。
-
-**核查结论**：
-- 静态引用 130+ 条，除下述 3 处外全部解析存在；变量拼接路径（`'Class/'.$arr[$i].'.Class.php'`、`include $bottom`、`require_once $config_file`）均有固定取值或 file_exists 守卫，运行时安全
-- 被调用的全局函数/类（__、gpc、runquery、isfun、addslashes_array、HttpsCheck、csrf_token 等）均能追溯到定义文件；`__()`/`$auth` 仅 install 使用（已由第十四章自足化处理）
-
-**发现并修复的同类运行时致命问题（第一轮）**：
-
-| 严重度 | 文件:行号 | 问题 | 修复方式 |
-|---|---|---|---|
 | High | admin/Upload.php:3 | require admin/lib/Module.Class.php（不存在）→ fatal 白屏；本页未使用该文件任何符号 | 移除死引用（保留注释说明） |
 | High | admin/system/UserEdit.php:3 | require admin/lib/Init.php（不存在）→ fatal 白屏 | 替换为 `../../includes/Init.php`（全站统一引导，提供 $db/Crypt/CSRF） |
 | High | admin/system/system_log_data.php:4 | require D:\Desktop\pan\lib\connect.php（lib 目录不存在）→ fatal 白屏 | 替换为 `../../includes/Init.php` |
 
-**追加修复（第二轮复核，消除遗留的同类白屏）**：
-
-| 严重度 | 文件:行号 | 问题 | 修复方式 |
-|---|---|---|---|
 | High | admin/system/User.php（首行必达）、QuickUser.php、UserEdit.php、admin/lib/Account.Class.php | `$dou` 全站从未赋值（grep 零命中），PHP 8 下 `$dou->...` 调用 = "Call to a member function on null" fatal——User.php 第 5 行 `$dou->AddrConvery()` 即白屏 | `$dou` 统一重命名为 `$db`（35 处 / 4 文件；User/QuickUser 依赖 admin/index.php 外层 include 作用域提供 $db，UserEdit 已自带 Init 引导；未误伤 dou_link 属性名） |
 | Medium | admin/system/system_log_data.php:12/13 | `mysqli_query($query,...)` 第一参数 `$query` 未定义，PHP 8 TypeError fatal（error_reporting(0) 挡不住 Error） | 迁移为 `$db->query()` / `$db->fetch_array()`（页面本身无 PHP 入口引用，属孤儿页，仍一并修） |
 
-**验证**：追加修复后全树复跑，**92/92 双版本通过（PHP 8.3.35 ok=92 fail=0；PHP 7.3.33 ok=92 fail=0）**；`$dou` 标识符全树零残留。
-
-**遗留问题（低危，建议后续处理）**：
 1. admin/lib/ 整个目录（Account.Class.php、Conf.php、DbManage.class.php、mysql.class.php）为死代码，无任何引用；内部含与 includes/class/ 同名的 Crypt、DbMysql 类，误引入会触发类重声明 fatal → 建议删除或归档
 2. ht/kjsd、ht/qt、ht/yfk、ht/zlwh 子页面用 PHPDISK_ROOT_BAK（基于 DOCUMENT_ROOT）拼 top.php/footer.php，与项目根不同部署位置时会 404 → 建议统一为 PHPDISK_ROOT
 3. admin/Upload.php:65 `str_replace('upload.php','',__FILE__)` 大小写不匹配（实际文件名 Upload.php），替换不生效 → 建议修正
 
-**后续跟进（线上报障后追加，见第十四、十五章）**：修复 install/index.php 在 PHP 7.3.4 下的整页白屏（缺失依赖 require fatal，语法校验无法发现），并完成全站"运行时依赖"排查——修复另外 4 处同类运行时致命问题（3 处缺失 require + `$dou` 未定义变量 + `$query` 未定义句柄）。最终状态：全树 92 文件经 **PHP 8.3.35 与 PHP 7.3.33 双版本 `php -l` 全部通过（ok=92 / fail=0）**，install 安装向导双版本"无 DB 冒烟"渲染通过。
+修复 install/index.php 在 PHP 7.3.4 下的整页白屏（缺失依赖 require fatal，语法校验无法发现），并完成全站"运行时依赖"排查——修复另外 4 处同类运行时致命问题（3 处缺失 require + `$dou` 未定义变量 + `$query` 未定义句柄）。
 
-## 十六、UI 改版（参考永硕E盘界面结构，第 1 批）
-
-对 4 个对外页面做现代化改版，参考 www.ys168.com 前台 / yssl.ysepan.com 用户界面 / 注册页 / 登录页的**界面结构与交互范式**（未复制任何版权代码/资源/商标文案，特性与说明文案均自拟）。全站统一设计规范：主色 #2563eb、页面背景 #f3f4f6、白色卡片、圆角 12px、卡片阴影、响应式断点 992px/768px。**所有页面保持 URL / GET-POST 参数 / 表单字段 / 元素 ID / JS 函数 / PHP 业务逻辑与 DB 调用契约不变**，改版仅动 HTML 版式与新增样式文件。
-
-| 页面 | 改动 | 改版内容 | 契约保持要点 |
-|---|---|---|---|
 | index.php（首页） | 重写 HTML + 新增 css/index.css | 现代 landing：顶部导航（沿用原链接集）、Hero（Website_title+标语+双 CTA：现在注册→/register.php、示例空间→k.php?name=demo 占位）、特性四卡片（直接登陆/简单易用/在线查看/权限控制，内联 SVG 图标）、动态区块卡片化（公告 gg/快捷导航 7 链接/客户 khlb/友链 yqlj） | Write_Data()/bkxs() 定义一字未改、$free 与 Website/Website_title 输出保留、footer.php 仍 include；不再 include top.php（自绘 head，避免旧样式冲突） |
 | k.php + user/Language/{zh,eng,jpn}.php（用户盘页） | k.php head 微改 + 三份语言文件重构 + 新增 css/k_ui.css | 顶部导航（首页/空间后台/客服中心/操作指南）、空间用量条（kjz1/kjz2/zxrsts 保留原 ID 与填充机制，新增进度条 updateSpBar()）、目录列表+排序按钮（纯前端 sortMenuList()，仅重排已渲染目录项）、操作区与自定义区保留 | 65 个元素 ID、全部内联事件与 JS 函数（qhzml/checkly/_m.tj/_C.kq 等）、3 个 iframe src、PHP 输出点（$title/$disk/$time/$jy/UserSpaceSize/LoadingLink）全部保留；user/js/* 与 user/css/{1-6,51}.css 零改动；k.php 内嵌 JS 脚手架逐行未动，仅末尾追加 2 个新函数 |
 | register.php（注册页） | 重写 HTML + 新增 css/register.css | 4 步向导卡片化（步骤条 menu1/bz1-4 保留、nrshow 机制不变）、左侧注意事项卡片、注册成功面板现代化 | 49 个元素 ID（tedlmc/temm/teyzm/wen1-2/da1-2/teem 等）、44 个 JS 函数与 4 个全局变量、reg_aj.php 全部 lx/参数、内联事件、$db->Product('2')/MBWT()/$settings['site_title'] 输出点全部保留；内嵌脚本块逐字未改 |
 | ht/login.php（登录页） | 重写 HTML + 新增 css/login.css | 居中登录卡片 + 说明区卡片；验证码行与忘记密码/注册链接保留 | PHP 登录逻辑（UserCheck→验证码比对→PWDCheck→Login）与 6 个 JS 函数逐字未改；form ctl00/dl1/dl2/dl3/bu1/bux1/imgyzm/sm_yzm/yhztxs 契约完整；旧 #movID/#mask 样式块无 JS 引用已移除 |
 
-**验证**：改动的 7 个 PHP 文件（index.php、k.php、user/Language/{zh,eng,jpn}.php、register.php、ht/login.php）经 **PHP 8.3.35 与 7.3.33 双版本 `php -l` 全部通过（零失败）**；每页契约自检（元素 ID/函数名/参数名逐项 grep 比对）通过；各分片报告含契约自检结果表。
-
-**遗留/注意事项**：
-1. index.php"示例空间"按钮指向 `k.php?name=demo`，demo 为占位用户名，上线前替换为真实演示空间用户名（k.php 对不存在的用户名会重定向回首页）
-2. k.php 目录排序为纯前端实现：仅对已渲染的顶层目录项重排，刷新/增删目录后排序态会被原逻辑重置；未做递归子目录排序
-3. k.php 空间用量条在剩余空间（kjz2）首次异步填充前显示 0% 属正常；建议部署后浏览器实测：Firefox/Edge 下 #lynr/#dzx 高度铺满（jcgd 布局）、排序后目录展开正常
-4. 注册页 4 步流程与登录页建议部署后人工走查一遍（AJAX 提示图标对齐、验证码刷新、错误提示回显）——本轮仅 lint + 静态契约自检，未起 Web 服务实测
-5. 新增样式文件：css/index.css、css/k_ui.css、css/register.css、css/login.css（与原 css/common.css、reg.css 叠加，互不影响其它页面）
-
-## 十七、UI 改版（第 2 批：产品/定价页 + 全站共享头部）
-
-参考永硕E盘 pricing 页与前台顶部版式范式追加两个页面（未复制任何版权代码/资源/商标文案）。沿用第 1 批设计语言（主色 #2563eb、卡片、圆角 12px、响应式）。不改 URL/GET 契约、不改 PHP 业务逻辑与 DB 调用、双版本 `php -l` 验收。
-
-### 17.1 list_cp.php（产品/定价页）+ 新增 css/pricing.css
 - **改版**：页面标题区（主色 h1+副标题）→ `.pricing-table-wrap` 产品对比表（`$db->Product('1')` 原样调用与 `</table>` 闭合，外层 CSS 覆盖：表头主色底白字、斑马纹、hover 高亮、圆角卡片、≤992px 横向滚动）→ 说明注释卡片（内容逐字保留，新增一行"价格以账户充值/空间升级页面为准"）→ 付费/免费区别表卡片化（内容逐字保留）→ 双 CTA 按钮化（/register.php 注册空间、/ht/kjsj.php 立即升级）
-- **关键事实**：`Product()` 方法（System.class.php:277-300）三个分支均无价格输出，epan_product 表无价格列（install.sql 无该表 CREATE TABLE，生产库另行维护）——**价格行未编造**，以"免费型/付费型"标识 + 状态列呈现并注明价格以充值/升级页为准；若需展示月付/年付价格需业务侧补数据源
-- **验证**：双版本 lint 零失败；Product('1')/DB/URL 契约不变；System.class.php 一字未改
 
-### 17.2 includes/top.php（全站共享头）+ 新增 css/header.css + index.php 回归统一
 - **top.php 改版**：头部重设计为 `logo(保留 id="logo") + Website_title 品牌名 + 副标语 + 6 条导航（URL 契约原样：/ 、/register.php 、/list_cp.php 、/ht/ 、/kf.php 、/help/）+ "现在注册"主色 CTA（→/register.php）+ 汉堡按钮（≤768px 折叠，原生 JS）`；**meta keywords/description 补转义**（htmlspecialchars ENT_QUOTES UTF-8，原未转义）；JS 引入清单 6 项逐字保留顺序不变（jquery-1.9.1/artDialog/iframeTools/jquery/jquery-1.7.1/ajax-dq，register.php 等依赖 sendRequest/artDialog）；`<div id="ysm">` 容器与"不输出 body、闭合 </head>"结构契约保留（~35 个 include 页面行为不变）；新样式全部 `.phd-*` 前缀类与页面内容旧类隔离
-- **index.php 回归统一**：改回 `include PHPDISK_ROOT.'includes/top.php'`，删除自绘 head 与 .site-header，补 `<title>`+index.css link；Hero/四卡片/动态区块/footer 与 Write_Data()/bkxs()/$free 契约逐字未改，**landing 版式不回退**
-- **验证**：top.php/index.php 双版本 lint 零失败；全树 grep 确认旧 `#topnav`/`#header` 无任何 JS/页面依赖（仅 ht/qt/hywj.php 自绘旧头部，未动）；meta 转义已加；PHPDISK_ROOT_WEB 路径保留
-
-### 17.3 验证与遗留
-- 改动文件：list_cp.php、includes/top.php、index.php + 新增 css/pricing.css、css/header.css，共 5 个；全部双版本 lint 通过
-- 遗留：① 定价页无价格数据源（业务侧需补 epan_product 价格字段或由订单模块提供）② 未起 Web 服务浏览器实测（建议部署后走查 ht 后台页头部适配、窄屏汉堡折叠、首页 Hero 视觉一致）③ #ysm 728px 固定宽保持历史布局，整站移动端适配属后续独立议题 ④ 执行环境曾短暂故障：两个并行子代理实例工具调用连续不可用（Read/PowerShell 均返回环境未就绪），上级代理改由本层直接执行完成，子代理已转待命；本批报告改由本层 artifacts 落盘
-
-## 十八、UI 改版（第 3 批：共享顶部按 ys168 实测重构 + 全站设计系统统一）
-
-依据用户 Edge 实测抓取的 www.ys168.com 前台顶部（品牌居左 + 5 项横向导航 + 蓝色主题）重构共享头，并建立全站统一设计系统层消除页面间"割裂"。仅借鉴版式与导航范式，未复制参考站版权代码/资源/商标（品牌文字用本项目 `Website_title`，不硬编码"永硕E盘"）。
 
 ### 18.1 includes/top.php 重构（任务A）
 - 导航改 **5 项且顺序与 ys168 一致**：首页(/) → 注册(/register.php) → 产品列表(/list_cp.php) → 操作指南(/help/) → 空间后台(/ht/)；**移除"客服中心"**（/kf.php 仍可直链进入）
