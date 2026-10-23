@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <style type="text/css">
+        body    {background-color:#FFFFE6;font-size:9pt;border:0px;padding:10px;margin:0;font-family: 宋体, Century Gothic, Arial, Helvetica;}
+         p	    {margin:0px;line-height:150%;}
+    </style>
+    <link href="/templates/disk/images/mydisk.css" rel="stylesheet" type="text/css">
+    <script type=text/javascript src="/includes/js/jquery.js"></script>
+<script type="text/javascript" src="/includes/js/common.js"></script>
+<script type="text/javascript" src="/includes/js/core.js"></script>
+<script type="text/javascript" src="/includes/js/queue.js"></script>
+<script type="text/javascript" src="/includes/js/progress.js"></script>
+<script type="text/javascript" src="/includes/js/speed.js"></script>
+<script type="text/javascript" src="/includes/js/events.js"></script>
+<script type="text/javascript">
+function open_tag(){
+	return false;
+}
+function upload_replace(){
+	return false;
+}
+</script>
+<script type="text/javascript">
+var lang = new Array();
+lang['has_upload'] = "已上传：";
+lang['current_speed'] = "当前速度：";
+lang['queue_too_many_files'] = "同一次上传超过最大的文件数。";
+lang['current_file_size'] = "当前大小";
+lang['file_too_big'] = "超过了单个文件的最大限制";
+lang['zero_byte_file'] = "零字节文件，系统自动删除。";
+lang['unknown_error'] = "未知错误";
+lang['upload_complete'] = "操作成功，请关闭此上传对话框进行其他操作。";
+lang['js_tag'] = "标签";
+lang['js_tag_tips'] = "多个标签用英文逗号隔开。";
+lang['js_content'] = "描述";
+lang['js_expand'] = "展开";
+lang['replace_file_tips'] = "Tips: 如果选定了多个文件，系统只会上传第一个作为替换文件用。";
+var upl;
+	name='';
+	mlbh='';
+	wjdxs='';
+	zhbds='';
+function onloads() {
+	name=parent.ddlmc;
+	mlbh=parent.Q.mlbh;
+	wjdxs=parent.wjdxs;
+	zhbds=parent.zhbds;
+	//alert(zhbds);
+	var settings = {
+		flash_url : "/includes/js/upload.swf",
+		upload_url: '/up.php?folder_id='+mlbh+'&name='+name+"&fl="+zhbds,
+		post_params: {"task":"doupload","file_id":"0"},
+		file_size_limit :wjdxs,
+		file_types : "*.*",
+		button_image_url : "/images/upload_icon.gif",
+		button_placeholder_id : "spanPDButton",
+		button_width: 110,
+		button_height: 18,
+		button_text : "<span>选择文件("+wjdxs+")</span>",
+		file_queued_handler : fileQueued,
+		file_dialog_complete_handler: fileDialogComplete,
+		file_queue_error_handler : fileQueueError,
+		upload_start_handler : uploadStart,
+		upload_progress_handler : uploadProgress,
+		upload_success_handler : uploadSuccess,
+		upload_complete_handler : uploadComplete,
+		custom_settings : {
+			uploadprogressbar : "uploadprogressbar"
+		}
+	};
+	upl = new SWFUpload(settings);
+ };
+ function reloads(){
+	// parent.zhbds='';
+	 parent.sxmldq1(mlbh);
+	 window.document.location.reload();
+	//$("#D_wjsc",window.parent.document).hide();
+	
+	
+	parent._CK.wjsc.zt=false;
+	$("#D_wjsc",window.parent.document).empty().remove();
+ }
+</script>
+
+</head>
+<body onLoad="onloads();">
+
+<div class="upload_style">
+	<span id="spanPDButton"></span>
+</div>
+<div class="upload_btn">
+    <input type="button" class="btn" style="height:2.5em;" value="上传文件" id="upload_btn" disabled="disabled"/>&nbsp;<font color="red">可多选文件，单个文件上传限制请参考:<a href="http://pan.haic.cc/list_cp.php" target="_blank" style="color:blue">网盘产品</a></font>
+</div>
+<div class="clear"></div>
+</div>	
+<div id="up_msg_tips" style="display:none"><img src="/images/up_suc.gif" align="absmiddle" border="0" /> <span id="up_msg"></span> <a href="###" onclick="">关闭</a></div>
+<div id="uploadprogressbar"></div>
+</body>
+</html>

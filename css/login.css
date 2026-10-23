@@ -1,0 +1,174 @@
+/* ============================================================
+   空间后台登录页样式 (login.css)
+   设计规范：
+   - 主色 #2563eb / 深主色 #1d4ed8 / 浅主色背景 #eff6ff
+   - 正文 #1f2937 / 次要 #6b7280 / 边框 #e5e7eb
+   - 页面背景 #f3f4f6 / 卡片 #ffffff
+   - 圆角 12px；卡片阴影 0 1px 3px rgba(0,0,0,.08),0 4px 14px rgba(0,0,0,.06)
+   ============================================================ */
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #f3f4f6;
+    color: #1f2937;
+    font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* 登录内容：在共享蓝色导航下方水平居中（不再整页 flex 垂直居中，避免顶乱顶部导航） */
+.login-wrap {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+    max-width: 880px;
+    margin: 40px auto 48px;
+    align-items: stretch;
+}
+
+/* 通用卡片 */
+.card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 14px rgba(0,0,0,.06);
+    padding: 28px 28px;
+}
+
+/* 左侧说明区 */
+#ysleft {
+    flex: 1 1 320px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 12px;
+    padding: 28px 24px;
+    color: #1f2937;
+}
+#ysleft h2 {
+    margin: 0 0 14px 0;
+    font-size: 18px;
+    color: #1d4ed8;
+    border-bottom: 1px solid #dbeafe;
+    padding-bottom: 10px;
+}
+#ysleft .desc {
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.8;
+}
+#ysleft .desc b { color: #1d4ed8; }
+
+/* 右侧登录卡片 */
+#ysright {
+    flex: 1 1 380px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 14px rgba(0,0,0,.06);
+    padding: 28px 28px 24px 28px;
+}
+#ysright h1 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e5e7eb;
+}
+#ysright h1 img { vertical-align: middle; }
+
+/* 表单行 */
+.form-row {
+    margin-bottom: 16px;
+}
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 500;
+}
+.form-input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+    color: #1f2937;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
+}
+.form-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .15);
+}
+
+/* 验证码行 */
+.captcha-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.captcha-row .form-input { width: 130px; }
+#imgyzm {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.link {
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 13px;
+}
+.link:hover { color: #1d4ed8; text-decoration: underline; }
+.link.forgot { margin-left: 8px; }
+
+/* 验证码提示 */
+#sm_yzm {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    min-height: 16px;
+}
+
+/* 按钮行 */
+.btn-row {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.btn-primary {
+    flex: 1;
+    padding: 10px 0;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background .15s;
+}
+.btn-primary:hover { background: #1d4ed8; }
+.btn-primary:disabled { opacity: .7; cursor: not-allowed; }
+
+/* 注册链接 */
+.register-link {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+/* 小屏：单列堆叠 */
+@media (max-width: 768px) {
+    .login-wrap { flex-direction: column; max-width: 420px; margin: 20px auto 28px; }
+    #ysleft, #ysright { padding: 20px; }
+}

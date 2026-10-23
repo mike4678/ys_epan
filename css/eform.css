@@ -1,0 +1,15 @@
+body {margin: 0;}
+
+td {font-size: 9pt;font-family: 宋体}
+
+a {text-decoration: none}
+
+A:hover {COLOR: red;TEXT-DECORATION: underline}
+
+p {line-height: 140%;}
+
+.main {height:30;background-color:#0066B3;}
+
+.top  {height:30;background-color:#0066B3;}
+
+.footer  {height:30;background-color:#0066B3;width:100%;}

@@ -1,0 +1,217 @@
+/* ============================================================
+ * k_ui.css — 用户盘页(k.php)改版专用样式
+ * 设计规范：主色 #2563eb / 深 #1d4ed8 / 浅底 #eff6ff
+ * 正文 #1f2937 次要 #6b7280 边框 #e5e7eb 页面底 #f3f4f6
+ * 圆角 12px 卡片阴影 字体栈 Segoe UI / Microsoft YaHei ...
+ * 注意：本文件只做视觉增强，不改变 idtop/idczq/idsyjy/lynr/dzx
+ *       的存在性与大体高度语义（jcgd 依赖它们的 offsetHeight）。
+ * ============================================================ */
+
+/* ---------- 全局 ---------- */
+body {
+    background-color: #f3f4f6 !important;
+    font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif !important;
+    color: #1f2937;
+}
+a { text-decoration: none; }
+
+/* ---------- 顶部标题区 idtop（jcgd 会测 offsetHeight，高度由内容自然撑开） ---------- */
+#idtop.tdtop {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+    border-bottom: 1px solid #1d4ed8 !important;
+    padding: 0;
+}
+#idtop .ystop {
+    padding: 10px 16px !important;
+    color: #eff6ff !important;
+}
+#idtop .ystop h1#kjbt {
+    font-size: 20pt !important;
+    margin: 2px 0 6px 0 !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    letter-spacing: .5px;
+}
+#idtop .ystop p#sylj {
+    margin: 0 0 8px 0 !important;
+    font-size: 9pt;
+}
+#idtop .ystop p#sylj a { color: #dbeafe !important; }
+#idtop .ystop p#sylj a:hover { color: #ffffff !important; text-decoration: underline; }
+
+/* ---------- 顶部导航条（改版新增） ---------- */
+.k-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, .12);
+    border-bottom: 1px solid rgba(255, 255, 255, .18);
+}
+.k-nav-item {
+    display: inline-block;
+    padding: 4px 12px;
+    margin-right: 4px;
+    border-radius: 8px;
+    color: #eff6ff !important;
+    font-size: 9pt;
+    transition: background .15s;
+}
+.k-nav-item:hover {
+    background: rgba(255, 255, 255, .22);
+    color: #fff !important;
+    text-decoration: none;
+}
+
+/* ---------- 空间用量条（改版新增容器，内含原 #kjz1/#kjz2/#zxrsts） ---------- */
+.k-spwrap {
+    margin-top: 6px;
+    margin-left: auto;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, .14);
+    border-radius: 10px;
+    max-width: 560px;
+}
+.k-sp-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 9pt;
+    color: #dbeafe;
+    margin-bottom: 6px;
+}
+.k-sp-info label { color: #ffffff; font-weight: 600; }
+.k-sp-track {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, .25);
+    border-radius: 999px;
+    overflow: hidden;
+}
+.k-sp-fill {
+    height: 100%;
+    width: 0%;
+    background: #ffffff;
+    border-radius: 999px;
+    transition: width .4s ease;
+}
+.k-sp-fill.k-sp-warm { background: #fde047; }
+.k-sp-fill.k-sp-hot  { background: #f87171; }
+
+/* ---------- 目录列表表头行（右侧 ta_wjq） ---------- */
+.ta_wjq {
+    background: #1d4ed8 !important;
+    color: #eff6ff !important;
+}
+.ta_wjq a { color: #fff !important; }
+.k-sortbtn {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 1px 10px;
+    font-size: 9pt;
+    color: #fff !important;
+    background: rgba(255, 255, 255, .18);
+    border: 1px solid rgba(255, 255, 255, .35);
+    border-radius: 999px;
+    cursor: pointer;
+}
+.k-sortbtn:hover { background: rgba(255, 255, 255, .32); text-decoration: none; }
+
+/* ---------- 左右面板卡片化 ---------- */
+#dzx {
+    background-color: #ffffff !important;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 14px rgba(0,0,0,.06);
+}
+#ysmenu1 {
+    border-radius: 0 0 12px 12px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 14px rgba(0,0,0,.06);
+}
+#lynr.lynrc {
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 14px rgba(0,0,0,.06);
+    background: #ffffff !important;
+}
+
+/* ---------- 留言列表项（重构后 ccenter.php 输出 class=cslyb） ---------- */
+#lynr .cslyb {
+    padding: 10px 12px;
+    margin: 0;
+    border-bottom: 1px solid #e5e7eb;
+    line-height: 1.7;
+    font-size: 9pt;
+}
+#lynr .cslyb:last-child { border-bottom: none; }
+#lynr .cslyb img { border-radius: 50%; vertical-align: middle; cursor: pointer; }
+#lynr .cslyb b { color: #2563eb; font-size: 10pt; margin-left: 4px; }
+#lynr .cslyb span { color: #1f2937; }
+#lynr .cslyb label { color: #6b7280; margin-right: 10px; font-size: 8pt; }
+#lynr .cslyb label[id^="i1_"] { color: #9ca3af; }
+
+/* ---------- 操作按钮美化（不改尺寸语义） ---------- */
+.BT2, .bt2 {
+    border-radius: 8px !important;
+    border: 1px solid #2563eb !important;
+    background: #2563eb !important;
+    color: #ffffff !important;
+    padding: 3px 14px !important;
+    cursor: pointer;
+}
+.BT2:hover, .bt2:hover { background: #1d4ed8 !important; }
+.BT2:disabled, .bt2:disabled { background: #9ca3af !important; border-color: #9ca3af !important; cursor: not-allowed; }
+
+/* ---------- 底部公告区 ---------- */
+#idsyjy { color: #6b7280; }
+#idsyjy a { color: #2563eb !important; }
+
+/* ---------- 响应式断点 ---------- */
+@media (max-width: 992px) {
+    #idtop .ystop h1#kjbt { font-size: 16pt !important; }
+    .k-sp-info { gap: 10px; font-size: 8pt; }
+}
+@media (max-width: 768px) {
+    /* 窄屏：外层表格改为块级堆叠，左栏与右栏上下排列 */
+    #ta_z, #ta_z > tbody, #ta_z > tr, #ta_z > tbody > tr { display: block; width: 100% !important; }
+    #ta_z td[style*="255"], #ta_z td[width="255"] { width: 100% !important; }
+    #lynr {
+        width: 100% !important;
+        height: 220px !important;
+        min-height: 220px !important;
+    }
+    #dzx {
+        height: 480px !important;
+    }
+    #ysmenu, #ysmenu1 { width: 100% !important; }
+    .k-nav { padding: 6px 8px; }
+    .k-nav-item { padding: 3px 8px; }
+}
+
+
+/* ===== HTML5/div 空间页布局（k.php 重写） ===== */
+.k-page { display: flex; flex-direction: column; height: 100%; min-height: 100vh; box-sizing: border-box; font-size: 12px; font-family: 宋体, Century Gothic, Arial, Helvetica; }
+.k-top { flex: 0 0 auto; }
+.k-head { padding: 6px 12px 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.k-body { flex: 1; display: flex; min-height: 0; padding: 8px 0 0; }
+.k-left { flex: 0 0 260px; width: 260px; display: flex; flex-direction: column; padding: 0 5px; box-sizing: border-box; }
+.k-menu { width: 100%; }
+.k-opwrap { flex: 0 0 auto; }
+.k-oparea { width: 100% !important; box-sizing: border-box; }
+.k-msglist { flex: 1; min-height: 120px; margin-top: 5px; width: 100% !important; box-sizing: border-box; }
+.k-right { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 0 6px 6px 0; box-sizing: border-box; }
+.k-filepanel { flex: 1; display: flex; flex-direction: column; border: 1px solid #000; min-height: 0; }
+.k-filehead { flex: 0 0 auto; height: 20px; line-height: 20px; padding: 0 6px; display: flex; justify-content: space-between; align-items: center; }
+.k-filetree { flex: 1; overflow-y: auto; background: #fff; word-wrap: break-word; min-height: 0; height: auto !important; }
+.k-foot { flex: 0 0 auto; margin-top: 4px; }
+.k-footline { padding: 2px 4px; }
+.k-footbar { text-align: right; padding: 2px 4px; }
+.k-footbar iframe { display: none; }
+#ysmenu1 textarea { width: 100%; box-sizing: border-box; }
+#ysmenu1 #nr { width: 100%; height: 70px; }
+/* 标题与顶部导航字号（恢复改版前 9pt 观感） */
+.k-head h1 { font-size: 16px; margin: 0; font-weight: bold; }
+.k-nav-item { font-size: 12px; }
+.k-filehead { font-size: 12px; }
+.k-menu div { font-size: 12px; }
+.k-sp-info { font-size: 12px; }
+.k-footline { font-size: 12px; }

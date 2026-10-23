@@ -1,0 +1,36 @@
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        body    {background-color:#cffebb;font-size:9pt;border:0px;padding:10px;margin:0;font-family: 宋体, Century Gothic, Arial, Helvetica;}
+         p	    {margin:0px;line-height:16px;}
+        .sjtb         {border:1px solid #BDB76B;border-collapse: collapse;width:100%;}
+        .sjtb td      {border:1px solid #BDB76B;font-size:9pt;}
+        .sjtb tr.trbt{background-color:#EEE8AA;color:#000;}
+        .ad{font-size:9pt;color:blue; }
+        .ad:hover {COLOR: red;TEXT-DECORATION: none; }  
+    </style>
+    <script language="javascript" type="text/javascript">
+        var ckid = "D_addd";
+        function csdy() {
+            parent._C.bt(ckid, "空间更新提示");
+            //parent.readxml('xszxlb', '', '', '', '');
+            //parent.readxml('xszxlb', '', '', '', '');
+         }
+         function $(rid) { return document.getElementById(rid); }
+         function qdhost() { var x = document.domain.split("."); if (x.length >= 3) return x[1] + "." + x[2]; if (x.length == 2) return x[0] + "." + x[1]; return document.domain; }
+		function kq(rmlbh){
+			if (rmlbh == parent.Q.mlbh) {alert("此目录已经开启");return; }
+			parent.mlkq(parent.$("ZMm_" + rmlbh).parentNode.childNodes[2]);
+        }
+    </script>
+</head>
+<body onmousedown ="parent._C.zd(ckid);" onLoad="csdy();">
+	<div id="nr"></div>
+	<div style="text-align:center;margin-top:10px;">
+		<input type="checkbox" id="idc1" checked ="checked" /><label for="idc1">声音提醒</label>
+		<input type="checkbox" id="idc2" /><label for="idc2">窗口激活</label>
+		<input type="button" value=" 关 闭 " onclick="parent._CK.addd.gb();" />
+	</div>
+</body>
+</html>

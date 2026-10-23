@@ -1,0 +1,28 @@
+*{ padding:0px; margin:0px;}
+.zcbz{ overflow:hidden;}
+.zcbz li{ float:left; width:25%; list-style:none; text-align:center;}
+.zcbz li p{ background:url(/images/line2.png) repeat-x 50%; height:40px; line-height:40px;}
+.zcbz li.current p{background:url(/images/line1.png) repeat-x 50%;}
+.zcbz li p span{ background:#ccc; padding:3px 8px;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px; color:#fff; font-weight:bold; font-size:12pt;}
+.zcbz li.current p span{background:#008000;}
+
+.zcbz li small{  font-size:11pt;}
+
+.zcnr{ padding:30px 0px 0px 0px;}
+.zcnr .grop{ margin-bottom:10px; line-height:30px;}
+.zcnr .grop label{ width:130px; text-align:right; display:block;float:left;font-size:10pt;}
+.zcnr .grop label span{ color:#FF7300; margin-right:6px; margin-left:12px;}
+.zcnr .grop select{width:176px;border:1px solid #ccc; -moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px; padding:3px 12px; margin-right:12px;}
+.zcnr .grop input{width:150px;border:1px solid #ccc; -moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px; padding:3px 12px; margin-right:12px;}
+.zcnr .grop span.sr_sm{display:block; margin-left:130px; line-height:26px;}
+.zcnr .grop span.smnr{line-height:18px;font-size:9pt;}
+
+.zcbut{ padding:20px 150px 0px 0px; text-align:right;}
+.zcbut button{-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px; padding:6px 15px;background:#008000;color:#fff; border:1px solid #008000; cursor:pointer; margin-right:12px;}
+.zcbut button.bkup {float:left;}
+.zcbut button:hover,button:hover:focus{
+	border: 1px solid #004F00;
+	text-align: center;
+}
+
+.zctil{background:#335374;  color:#fff; padding:8px 12px; margin-bottom:20px;}

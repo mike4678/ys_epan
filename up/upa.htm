@@ -1,0 +1,42 @@
+
+<html>
+<head>
+    <title></title>
+    <script language="javascript" type="text/javascript">
+        document.domain = qdhost();
+        var pid = "";ajurl = "";
+        function qdhost() { var x = document.domain.split("."); if (x.length >= 3) return x[1] + "." + x[2]; if (x.length == 2) return x[0] + "." + x[1]; return document.domain; }
+        window.onload = function() {
+            pid = parent._fup.scpz1;
+            if (!pid || pid == "") return;
+            ajurl = "upjd.aspx?p=" + pid;
+            dy();
+        }
+
+
+        var http_request = false; var callback_func;
+        function dy() {sendRequest(ajurl, cl) }
+        function cl(rmsg) {
+            if (parent.jsxx(rmsg)) setTimeout("dy();", 1000);
+           
+        }
+
+        function sendRequest(url, func) {
+            http_request = false; callback_func = func;
+            if (window.XMLHttpRequest) {
+                http_request = new XMLHttpRequest();
+                if (http_request.overrideMimeType) { http_request.overrideMimeType('text/xml'); }
+            } else if (window.ActiveXObject) {
+                try { http_request = new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) { try { http_request = new ActiveXObject("Microsoft.XMLHTTP"); } catch (e) { } }
+            }
+            http_request.onreadystatechange = alertContents;
+            http_request.open('GET', url, true);
+            http_request.send(null);
+        }
+        function alertContents() { if (http_request.readyState == 4) { if (http_request.status == 200) callback_func(http_request.responseText); } }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

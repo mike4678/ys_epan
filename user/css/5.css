@@ -1,0 +1,81 @@
+body 		{background-color:#9CBDE1;font-family: 宋体, Century Gothic, Arial, Helvetica;margin:0px;}
+img          {border:0;}
+.tdtop       {background-color:#2D6DA1;border-bottom:1px solid #3E3E3E;}
+div.ystop	{padding:3px;color:#BCE9FF;}
+div.ystop h1	{FONT-SIZE: 18pt;margin:10px 0 0 9px;}
+div.ystop p	{margin:15px 0 0 8px;}
+div.ystop a	{COLOR: #BCE9FF;}
+.ta_wjq		{background-color:#00006F;color:#f1f1f1}
+.mlxz		{color:blue ;height:18;width:162;background-color:#DDECFF;}
+.tx3 		{height:18px;font-size: 9pt; border: 1px solid; border-color: black black #000000; color:blue ;background-color:#DDECFF}
+#nr			{color:blue;BORDER:rgb(51,51,51) 1px solid;width: 220; height:55;
+				 background-color:#DDECFF;font-family: 宋体, Century Gothic, Arial, Helvetica; font-size: 9pt}
+.lynrc		{background-color:#EBF2FF;padding:3px;width:247px;border:1px solid #000;color:#00006F;overflow-y :scroll;
+height:100%;word-wrap:break-word;word-break:break-all;}
+.lynrc p	{line-height:19px;margin:5px 0 3px 0;}
+.lynrc p  {background:url(/user/images/line_yy1.gif) 0em -0.1em;}
+.lynrc b  {margin-left:3px;}
+.lynrc label  {margin-right:5px;}
+.lynrc img{width:15px;height:15px;cursor:url(/user/cur/edit1.cur),default;}
+a.aly        {cursor:url(/user/cur/edit1.cur),default;display:inline-block;}
+a.aly:hover  {background-color:red;}
+#ysmenu		{width:100%;height:22px;background:url(/user/images/menubj1.gif) repeat-x 0em 0em;}
+#ysmenu1		{width:253px !important;width:255px;/*min-height:125px !important;height:125px;*/border:1px solid #000;border-top:0px solid #000;background-color:#CCE2F4;margin-top:0px;}
+#ysmenu1 p	{margin:2px 0 0 16px;line-height:20px;}
+.la1          {width:58px;display:inline-block;}
+#ysmenu a 	{font-size:9pt;border-top:1px solid #000;border-right:1px solid #000;border-left:1px solid #000;text-decoration:none}
+#ysmenu div	{margin-left:1px;float:left;text-align:center;font-size:9pt;padding-left:5px;padding-right:5px;cursor:pointer;}
+.ysm0        {height:15px !important;height:20px;margin-top:2px;padding-top:3px;border:1px solid black;border-bottom:1px solid #000;background-color:#60B1EA;}
+.ysm0x       {height:15px !important;height:20px;margin-top:2px;padding-top:3px;border:1px solid black;border-bottom:1px solid #000;background-color:#CCE2F4;}
+.ysm1        {height:15px !important;height:21px;margin-top:1px;padding-top:4px;border:1px solid black;border-bottom:1px solid #CCE2F4;background-color:#CCE2F4}
+.wjlxxz		{border:1px dashed #00006F;margin-right:10px;}
+div.ysm0 a:hover{background-color:#CCE2F4;}
+.a1 			{color:#000000; font-size:9pt }
+:hover.a1 	{color:red; text-decoration:underline}
+.a2 			{color:#808080; font-size:9pt }
+:hover.a2 	{color:red}
+P 			{FONT-SIZE: 9pt;line-height:140%;}
+td			{font-size:9pt;}
+A 			{color:#000;font-family: 宋体, Century Gothic, Arial, Helvetica; text-decoration: none }
+A:hover 		{COLOR: red; TEXT-DECORATION: underline}
+#mainMenu	{width: 100%;font-size:9pt;padding-top:3px;}
+#mainMenu font   {font-size:9pt;margin-left:6px;color:#006600}
+#menuList 	{margin: 0px;padding:0px;}
+#menuList li {list-style-type:none; BORDER-BOTTOM: #76C196 1px solid;line-height:140%;padding-left:0px;}
+#menuList li ul li,#menuList li ul li ul li  {BORDER-BOTTOM:0;}
+#menuList li label   {color:#000080;margin-left:6px;}
+#menuList li span label   {color:#696969;margin:0;}
+#menuList li img{width:16px;height:16px;margin-right:1px;cursor:url(/user/cur/edit1.cur),default;}
+.menu        {display: none; border-left:2px solid green;padding-left:3px;padding-bottom:10px;}
+#menuList li ul      {margin-left:35px;height:auto!important;height:160px;min-height:160px;}
+#menuList li ul li ul{margin-left:15px;height:auto!important;height:80px;min-height:80px;}
+a.ml	{color: #000;text-decoration: none;}
+a.wj:visited,a.lj:visited {color:#808000;}
+.lxts {font-size:9pt;padding-top:5px;}
+.s1  {padding-left:15px;background:url('/user/images/jt1.gif') no-repeat 0em 0.1em;margin-top:5px;}
+.s2  {padding-left:16px;background:url('/user/images/jt2.gif') no-repeat 0.2em 0em;padding-top:3px;padding-right:2px;color:red;}
+.s3  {padding-left:16px;background:#fff url('/user/images/jt3.gif') no-repeat 0em 0.2em;padding-top:0px;}
+#menuList li table       {border:1px solid #8FBC8F;border-bottom:1px solid black;border-right:1px solid black;
+                         margin-left:2px;width:15px;height:13px;float:left;margin-top:3px;margin-right:1px !important;margin-right:0px;background-color:#FFFF9C;cursor:pointer;}
+#menuList li table td    {border:0px;width:2px;}
+#menuList li table td.r  {background-color:A0522D}
+#menuList li table td.g  {background-color:228B22}
+a.mln 	{color: blue;font-size: 9pt;text-decoration: none;}
+a.ml:hover,a.mln:hover{color:red;text-decoration: underline;}
+.newa 		{color: blue;}
+span.key 	{text-decoration: underline;}
+.yybj		{font-size: 9pt;text-decoration:none;color:#928047;margin-left:3px;}
+:hover.yybj 	{text-decoration:underline;color:#928047;}
+.yyck		{font-size: 9pt;text-decoration:underline;color:#000080;margin-left:8px;}
+:hover.yyck 	{color:blue;text-decoration:none}
+div.yszdyq 	{margin-top:3px;margin-left:5px;margin-right:5px;width:166px !important;width:170px;font-size:9pt;border: 2px solid #2D6DA1;}
+.z_bt		{color:#fff;padding-top:5px;padding-bottom:3px;padding-left:20px;background:#2D6DA1 url(/user/images/ysbt.gif)  no-repeat 0.3em 0.3em;word-wrap:break-word; overflow:hidden;}
+.z_bo		{background-color:WhiteSmoke;width:100%;padding:0px 0px 0px 0px;word-wrap:break-word; overflow:hidden;display:block;}
+.z_bo ul		{margin:1px;padding:1px;background-color: #fff;list-style-type:none;}
+.ck          {font-size:9pt;border:1px solid #153074;position :absolute; z-index: 1500; background-color: #2D6DA1;}
+.ck p        {line-height:20px;margin:0px;}
+.ckbt        {padding-left:4px;padding-top:2px;height:22px;color:White;background-color: #153074;line-height:150%;}
+.jaml {COLOR: #000000;font-size:9pt ;text-decoration:none}
+:hover.jaml {color:blue; text-decoration:underline}
+.abu {display:inline-block;width:15px;color: #ccc;font-size:9pt ;text-decoration:none;float:right;/*font-weight:bold;*/text-align:center;}
+:hover.abu {font-size:14pt;text-decoration:none}

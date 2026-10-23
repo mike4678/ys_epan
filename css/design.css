@@ -1,0 +1,318 @@
+/* ============================================
+   PHPDisk 全站设计系统（UI 改版第 3 批统一层）
+   经 includes/top.php 全站注入（common.css 之后加载）
+   设计 token 与 index.css / register.css / login.css / k_ui.css / pricing.css 统一
+   主色 #2563eb / 深主色 #1d4ed8 / 浅主色背景 #eff6ff
+   页面背景 #f3f4f6 / 卡片 #ffffff / 正文 #1f2937 / 次要 #6b7280 / 边框 #e5e7eb
+   ============================================ */
+
+/* ---- 设计 Token ---- */
+:root{
+  --c-primary:#2563eb;
+  --c-primary-dark:#1d4ed8;
+  --c-primary-light:#eff6ff;
+  --c-text:#1f2937;
+  --c-muted:#6b7280;
+  --c-border:#e5e7eb;
+  --c-bg:#f3f4f6;
+  --c-card:#ffffff;
+  --radius-lg:12px;
+  --radius-sm:8px;
+  --shadow-card:0 1px 3px rgba(0,0,0,.08),0 4px 14px rgba(0,0,0,.06);
+  --font-stack:'Segoe UI','Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif;
+}
+
+/* ---- 基础视觉覆盖（仅外观，不改布局/text-align，兼容旧页面结构） ---- */
+body{
+  font-family:var(--font-stack);
+  font-size:14px;
+  color:var(--c-text);
+  background:var(--c-bg);
+}
+a:link,a:active,a:visited{
+  color:#2563eb;
+}
+a:hover{
+  color:#1d4ed8;
+  text-decoration:underline;
+}
+
+/* 标题统一（覆盖 common.css 的绿色 h1 / 红色 h3） */
+h1{
+  color:#1f2937;
+  border-bottom:none !important;
+  height:auto !important;
+  font-size:20px;
+  font-weight:700;
+}
+h2{
+  color:#1f2937;
+}
+h3{
+  color:#1d4ed8;
+  font-size:15px;
+  font-weight:600;
+}
+
+/* 表格表头统一主色（覆盖 common.css td.tdbt #335374） */
+td.tdbt{
+  background-color:#2563eb !important;
+  color:#fff;
+}
+
+/* 表单控件外观统一（不改变宽度/布局） */
+input[type="text"],
+input[type="password"],
+input[type="file"],
+select,
+textarea{
+  border:1px solid #cbd5e1;
+  border-radius:8px;
+  padding:6px 10px;
+  font-family:var(--font-stack);
+  font-size:14px;
+  background:#fff;
+  color:#1f2937;
+  box-sizing:border-box;
+  transition:border-color .15s ease,box-shadow .15s ease;
+}
+input[type="text"]:focus,
+input[type="password"]:focus,
+select:focus,
+textarea:focus{
+  outline:none;
+  border-color:#2563eb;
+  box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+input[type="submit"],
+input[type="button"],
+button{
+  border-radius:8px;
+  font-family:var(--font-stack);
+}
+
+/* ---- 通用按钮（与页面专属 css 的 .btn 系同 token，此处兜底） ---- */
+.btn{
+  display:inline-block;
+  padding:10px 24px;
+  font-size:15px;
+  font-weight:600;
+  text-decoration:none !important;
+  border-radius:8px;
+  transition:background .15s ease,color .15s ease,border-color .15s ease;
+}
+.btn-primary{
+  background:#2563eb;
+  color:#fff !important;
+  border:1px solid #2563eb;
+}
+.btn-primary:hover{
+  background:#1d4ed8;
+  border-color:#1d4ed8;
+  color:#fff !important;
+}
+.btn-secondary{
+  background:#fff;
+  color:#2563eb !important;
+  border:1px solid #2563eb;
+}
+.btn-secondary:hover{
+  background:#eff6ff;
+  color:#1d4ed8 !important;
+}
+
+/* ---- 页面容器卡片化（#ysm 为共享头+内容容器） ---- */
+/* 自适应浏览器宽度：宽屏铺满至 1200px，窄屏收缩；覆盖 common.css 的 728px 固定宽 */
+#ysm{
+  box-sizing:border-box;
+  width:100%;
+  max-width:1200px;
+  margin:8px auto;
+  background:#ffffff;
+  border-radius:12px;
+  box-shadow:0 1px 3px rgba(0,0,0,.08),0 4px 14px rgba(0,0,0,.06);
+}
+/* ht 后台等页面在共享头后嵌套输出 <div id="ysm">，内层透明化避免双重卡片 */
+#ysm #ysm{
+  background:transparent;
+  box-shadow:none;
+  border-radius:0;
+  margin:0;
+}
+
+/* ============================================
+   共享顶栏（includes/top.php 输出，.phd-* 类）
+   蓝色主题：品牌居左、导航居横排居右、CTA 白底蓝字
+   ============================================ */
+.phd-header{
+  box-sizing:border-box;
+  width:100%;
+  background:#2563eb;
+  border-bottom:2px solid #1d4ed8;
+  border-radius:12px 12px 0 0;
+  font-family:var(--font-stack);
+}
+.phd-inner{
+  box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  min-height:54px;
+  padding:6px 12px;
+  position:relative;
+  gap:8px;
+}
+.phd-brand{
+  display:flex;
+  align-items:center;
+  min-width:0;
+  margin-right:auto;
+}
+.phd-brand-link{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  text-decoration:none !important;
+}
+#ysm #logo.phd-logo{
+  float:none;
+  width:30px;
+  height:30px;
+  margin:0;
+  display:inline-block;
+  border-radius:8px;
+  background-size:cover;
+  background-position:center;
+  box-shadow:0 0 0 1px rgba(255,255,255,.25);
+}
+.phd-name{
+  color:#ffffff;
+  font-size:17px;
+  font-weight:700;
+  letter-spacing:.5px;
+  white-space:nowrap;
+}
+.phd-nav{
+  display:flex;
+  align-items:center;
+  gap:2px;
+  flex-wrap:nowrap;
+}
+.phd-nav a{
+  color:#ffffff;
+  font-size:14px;
+  text-decoration:none !important;
+  padding:7px 10px;
+  border-radius:8px;
+  transition:background .15s ease;
+  white-space:nowrap;
+}
+.phd-nav a:hover{
+  background:rgba(255,255,255,.18);
+  color:#ffffff;
+}
+.phd-cta{
+  display:inline-block;
+  margin-left:6px;
+  padding:7px 18px;
+  background:#ffffff;
+  color:#2563eb !important;
+  font-size:14px;
+  font-weight:600;
+  text-decoration:none !important;
+  border-radius:8px;
+  box-shadow:0 1px 3px rgba(0,0,0,.2);
+  transition:background .15s ease;
+  white-space:nowrap;
+}
+.phd-cta:hover{
+  background:#eff6ff;
+  color:#1d4ed8 !important;
+}
+.phd-toggle{
+  display:none;
+  margin-left:auto;
+  width:34px;
+  height:34px;
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:8px;
+  background:transparent;
+  cursor:pointer;
+  padding:0;
+  box-sizing:border-box;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+}
+.phd-toggle span{
+  display:block;
+  width:16px;
+  height:2px;
+  background:#ffffff;
+  border-radius:2px;
+}
+
+/* ---- 响应式：≤768px 导航折叠 ---- */
+@media (max-width:768px){
+  .phd-toggle{
+    display:flex;
+  }
+  .phd-nav{
+    display:none;
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    background:#ffffff;
+    border:1px solid #e5e7eb;
+    border-top:none;
+    border-radius:0 0 12px 12px;
+    box-shadow:0 4px 14px rgba(0,0,0,.1);
+    flex-direction:column;
+    align-items:stretch;
+    padding:6px;
+    z-index:200;
+  }
+  .phd-nav.phd-open{
+    display:flex;
+  }
+  .phd-nav a{
+    color:#1f2937;
+    padding:10px 12px;
+  }
+  .phd-nav a:hover{
+    background:#eff6ff;
+    color:#1d4ed8;
+  }
+  .phd-cta{
+    padding:7px 12px;
+    font-size:13px;
+  }
+}
+
+/* ---- 页脚（includes/footer.php） ---- */
+.phd-footer{
+  border-top:1px solid var(--c-border);
+  margin-top:16px;
+  padding:16px;
+  color:var(--c-muted);
+  font-size:12px;
+  line-height:1.7;
+  text-align:center;
+  background:#fafbfc;
+  border-radius:0 0 12px 12px;
+}
+.phd-footer-inner{
+  max-width:1200px;
+  margin:0 auto;
+}
+.phd-footer-text a{
+  color:#2563eb;
+}
+.phd-footer-text a:hover{
+  color:#1d4ed8;
+}
+.phd-footer-time{
+  margin-top:6px;
+  color:#9ca3af;
+}

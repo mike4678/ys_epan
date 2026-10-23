@@ -1,0 +1,47 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title></title>
+<style type="text/css">
+    #b  {margin:0px;margin-top:2px;FONT-SIZE: 9pt;}
+    #f  {height:21px!important;height:18px;width:180px;font-size: 9pt;border: 1px solid;background-color:#DCDCDC;}
+</style>
+</head>
+<script language="JavaScript" type="text/javascript">
+document.domain = qdhost();
+var bh; var bj1; var bj2; var msg;
+var bjc = ["#E2E2E2", "#ECCEEC", "#CECCEC", "#D3ECCC", "#CCE2F4", "#DFCCEC"];
+var txc = ["#f4f4f4", "#FDE2F7", "#E4DAFC", "#E4FEE4", "#DDECFF", "#F1E3FD"];
+var scck = false;
+function qdhost() { var x = document.domain.split("."); if (x.length >= 3) return x[1] + "." + x[2]; if (x.length == 2) return x[0] + "." + x[1]; return document.domain; }
+function initIt() {
+    var dxken; var dfgxz;
+    s1 = location.search;
+    //s1:序号,类别号(0为初始,3为上传成功)
+    bh = s1.substr(1, 1);
+    msg = s1.substr(2, 1);
+    if (msg == 0) {
+        dfgxz = s1.substr(3, 1);
+        dxken = (s1.substr(4, 1) == 1) ? true : false;
+    } else {
+        dfgxz = parent.dfgxz;
+        dxken = parent.dxken;
+    }
+    if (parent._CK.scjd.zt) scck = true;
+    $("l").innerHTML = (dxken) ? "File:" : "文件:";
+    $("b").style.backgroundColor = bjc[dfgxz - 1];
+    $("f").style.backgroundColor = txc[dfgxz - 1];
+
+    if (msg == 3) { parent.D_scjd_i.okcl(location.search); return; }
+    if (scck) parent.D_scjd_i._fup.jdgb();
+    if (msg != 0) { if (scck) parent.D_scjd_i._fup.errjs(s1.substr(2)); }
+}
+function $(rid) {return document.getElementById(rid); }
+window.onload = initIt;
+</script>
+<body id="b">
+<form name="MyForm" method="POST" enctype="multipart/form-data" action="">
+<label id="l">文件</label><input type="file" onkeypress ="return false;" name="f" id="f"/>
+</form>
+</body>
+</html>

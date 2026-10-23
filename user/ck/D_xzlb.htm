@@ -1,0 +1,83 @@
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        body    {background-color:#FFFFE6;font-size:9pt;padding:10px;border:0px;margin:0;font-family: 宋体, Century Gothic, Arial, Helvetica;}
+         p	    {margin:0px;line-height:150%;}
+        .sjtb         {border:1px solid #BDB76B;border-collapse: collapse;width:100%;}
+        .sjtb td      {border:1px solid #BDB76B;font-size:9pt;}
+        .sjtb tr.trbt{background-color:#EEE8AA;color:#000;}
+        .ad{font-size:9pt;color:blue; }
+        .ad:hover {COLOR: red;TEXT-DECORATION: none; }  
+        .jaml {COLOR: #000000;font-size:9pt ;text-decoration:none}
+        :hover.jaml {color:blue; text-decoration:underline}
+    </style>
+    <script language="javascript" type="text/javascript">
+        var ckid = "D_xzlb";
+        var pdq = 0;var pall = 0;
+        function csdy() {
+            parent._C.bt(ckid, (parent.dxken) ? "Download the list of records" : "文件下载记录列表");
+            if (!parent.dxkjl && !parent.Q.a) {
+                alert('管理员已禁止查看下载记录功能！\n\n提示: 管理员在管理区登录后可以查看下载记录');
+                parent._CK.xzlb.gb();
+                return false;
+            }
+             parent.readxml('xsdllb', '1', '', '', '');
+
+         }
+         function clfy(rxx) {
+             if (rxx == "") { rxx = "0,0,0,0,0,0"; $("b0").disabled = "true"; } else {$("b0").disabled = ""; }
+             var a = rxx.split(",");
+             if (a.length != 6) return;
+             $("jlsm").innerHTML = "共" + a[0] + "条记录,当前第" + a[1] + "页，共" + a[2] + "页";
+             
+             pdq = parseInt(a[1]);
+             pall = parseInt(a[2]);
+
+             $("b1").disabled = (a[3] == "0" ? "true" : "");
+             $("b2").disabled = (a[4] == "0" ? "true" : "");
+             $("b3").disabled = (a[5] == "0" ? "true" : "");
+              
+         }
+         function fy(r) {
+             var nys = 1;
+             $("b" + r).disabled = "true";
+             if (r == 1) nys = pdq - 1;
+             if (r == 2) nys = pdq + 1;
+             if (r == 3) nys = pall;
+             parent.readxml("xsdllb", nys, "", "", "");
+         }
+        
+         function $(rid) { return document.getElementById(rid); }
+         function qdhost() { var x = document.domain.split("."); if (x.length >= 3) return x[1] + "." + x[2]; if (x.length == 2) return x[0] + "." + x[1]; return document.domain; }
+    </script>
+</head>
+<body onmousedown ="parent._C.zd(ckid);" onLoad="csdy();">
+		<div id="nr">数据读取中...</div>
+		<br />
+		<p align='right'>
+		<label id="jlsm"></label>&nbsp;
+		<input type="button" id="b0" value="首页" onClick="fy(0);" />
+		<input type="button" id="b1" value="上一页" onClick="fy(1);" />
+		<input type="button" id="b2" value="下一页" onClick="fy(2);" />
+		<input type="button" id="b3" value="尾页" onClick="fy(3);" />
+		
+		</p> 
+		
+		<div style="text-align:right;margin-top:10px;">
+<!--		<a href="javascript:" onclick="$('jg').innerHTML='';parent.readxml('tjdllb','','','','');" class="jaml">[流量统计]</a>
+-->		<label id="jg"></label>
+		
+		
+
+		<input type="button" value="关闭" onClick="parent._CK.xzlb.gb();" />
+		
+		</div>
+		<ul>
+		    <li>小于800K的图片、文本等小文件的下载记录，一分钟内如果产生多条，则下载记录数据会被合并</li>
+            <li>文件下载完成后约需一分钟才会在此显示</li>
+            <li>管理员在空间管理区登录后可以查看完整ＩＰ地址</li>
+        </ul>
+        
+</body>
+</html>
